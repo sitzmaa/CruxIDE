@@ -1,0 +1,3 @@
+/Users/alexsitzman/Documents/Projects/CruxIDE/build/CMakeFiles/CruxIDE.dir
+/Users/alexsitzman/Documents/Projects/CruxIDE/build/CMakeFiles/edit_cache.dir
+/Users/alexsitzman/Documents/Projects/CruxIDE/build/CMakeFiles/rebuild_cache.dir
