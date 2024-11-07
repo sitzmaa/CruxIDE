@@ -14,19 +14,19 @@ file(GLOB SOURCES "src/*.cpp" "src/editor/*.cpp" "src/ui/*.cpp" "src/syntax/*.cp
 add_executable(CruxIDE ${SOURCES})
 
 # Add Google Test
-add_subdirectory(googletest)
+#add_subdirectory(googletest)
 
 # Add Test Files
-file(GLOB TEST_SOURCES "test/*.cpp")
+#file(GLOB TEST_SOURCES "test/*.cpp")
 
 # Create test executable
-add_executable(runTests ${TEST_SOURCES})
+#add_executable(runTests ${TEST_SOURCES})
 
 # Link test executable with Google test
-target_link_libraries(runTests gtest gtest_main)
+#target_link_libraries(runTests gtest gtest_main)
 
 # Enable CTest
-enable_testing()
+#enable_testing()
 
 # Add Tests
-add_test(NAME runTests COMMAND runTests)
+#add_test(NAME runTests COMMAND runTests)

@@ -9,6 +9,6 @@ SyntaxHighlighter::~SyntaxHighlighter() {
     // Destructor
 }
 
-void SyntaxHighlighter:highlightSyntax(const std::string& code) {
+void SyntaxHighlighter::highlightSyntax(const std::string& code) {
     // TODO Implement Syntax Highlighting
 }

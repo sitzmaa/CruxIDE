@@ -1,20 +1,47 @@
 #include "FileUtils.h"
-#include <fstream>
-#include <sstream>
 #include <stdexcept>
 
-FileUtils::FileUtils() {
-    // Constructor
+FileUtils::FileUtils() {}
+
+FileUtils::~FileUtils() {}
+
+std::ifstream FileUtils::openReadFile(const std::string& filepath) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open file: " + filepath);
+    }
+    return file;
 }
 
-FileUtils::~FileUtils() {
-    // Destructor
+std::ofstream FileUtils::openWriteFile(const std::string& filepath) {
+    std::ofstream file(filepath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open file: " + filepath);
+    }
+    return file;
+}
+
+void FileUtils::closeFile(std::ifstream& file) {
+    if (file.is_open()) {
+        file.close();
+    }
+}
+
+void FileUtils::closeFile(std::ofstream& file) {
+    if (file.is_open()) {
+        file.close();
+    }
 }
 
 std::string FileUtils::readFile(const std::string& filepath) {
-    // TODO Implement file reading
+    std::ifstream file = openReadFile(filepath);
+    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    closeFile(file);
+    return content;
 }
 
 void FileUtils::writeFile(const std::string& filepath, const std::string& content) {
-    // TODO Implement file writing
+    std::ofstream file = openWriteFile(filepath);
+    file << content;
+    closeFile(file);
 }

@@ -1,6 +1,6 @@
 #ifndef SYNTAXHIGHLIGHTER_H
 #define SYNTAXHIGHLIGHTER_H
-
+#include <string>
 class SyntaxHighlighter {
     public:
         SyntaxHighlighter();
