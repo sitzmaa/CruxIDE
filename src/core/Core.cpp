@@ -87,27 +87,106 @@ int _kbhit() {
 void Core::processInput() {
     if (_kbhit()) { // Check if a key is pressed on Unix
         char ch = getchar(); // Get the character of the pressed key
-        switch (ch) {
-            case 'h': // Move cursor left
-                cursorX = std::max(0, cursorX - 1);
+
+
+        EditorMode currentMode = editor.getCurrentMode();
+        
+        switch (currentMode) {
+            case EditorMode::Normal:
+                handleNormalModeInput(ch);
                 break;
-            case 'j': // Move cursor down
-                cursorY = std::min(cursorY + 1, uiManager.getWindowHeight() - 1);
+            case EditorMode::Insert:
+                handleInsertModeInput(ch);
                 break;
-            case 'k': // Move cursor up
-                cursorY = std::max(0, cursorY - 1);
+            case EditorMode::Visual:
+                handleVisualModeInput(ch);
                 break;
-            case 'l': // Move cursor right
-                cursorX = std::min(cursorX + 1, uiManager.getWindowWidth() - 1);
-                break;
-            // TODO: Add additional cases to handle other key inputs as necessary
         }
     }
 }
 #endif
 
+void Core::handleNormalModeInput(char ch) {
+    switch (ch) {
+        case 'i': // Switch to insert mode
+            editor.switchMode(EditorMode::Insert);
+            break;
+        case 'v': // Switch to visual mode
+            editor.switchMode(EditorMode::Visual);
+            break;
+        case ':': // Command mode (if needed)
+            editor.switchMode(EditorMode::Insert); // You could add command mode here too
+            break;
+        case 'h': // Move cursor left
+            cursorX = std::max(0, cursorX - 1);
+            break;
+        case 'j': // Move cursor down
+            cursorY = std::min(cursorY + 1, uiManager.getWindowHeight() - 1);
+            break;
+        case 'k': // Move cursor up
+            cursorY = std::max(0, cursorY - 1);
+            break;
+        case 'l': // Move cursor right
+            cursorX = std::min(cursorX + 1, uiManager.getWindowWidth() - 1);
+            break;
+
+    }
+}
+
+void Core::handleInsertModeInput(char ch) {
+    if (ch == 27) { // ESC key to switch back to normal mode
+        editor.switchMode(EditorMode::Normal);
+    } else {
+        // Insert characters into the editor content
+        editor.insertCharacter(ch);  // You will need to add `insertCharacter()` to Editor
+    }
+}
+
+void Core::handleVisualModeInput(char ch) {
+    switch (ch) {
+        case 'v': // Move selection down (for example)
+            // Implement selection logic
+            break;
+        case 'i': // Switch back to insert mode
+            editor.switchMode(EditorMode::Insert);
+            break;
+        case 'y': // Yank (copy)
+            // Implement copy functionality
+            break;
+        case 'd': // Delete selected text
+            // Implement delete functionality
+            break;
+        case 27: // ESC key to switch back to normal mode
+            editor.switchMode(EditorMode::Normal);
+            break;
+    }
+}
+
 // Updates the UI to reflect any changes in cursor position or content
 void Core::updateScreen() {
     uiManager.moveCursor(cursorX, cursorY); // Move cursor to new position in the UI
     uiManager.render(); // Render the updated content on the screen
+}
+
+void Core::handleCommandModeInput(char ch) {
+    if (ch == 'q') {
+        // Quit the editor
+    } else if (ch == 'w') {
+        // Save the file
+        editor.saveFile("example.txt");
+    }
+}
+
+void Core::updateScreen() {
+    // Update mode display
+    std::string modeIndicator = "Mode: ";
+    switch (editor.getCurrentMode()) {
+        case EditorMode::Normal: modeIndicator += "Normal"; break;
+        case EditorMode::Insert: modeIndicator += "Insert"; break;
+        case EditorMode::Visual: modeIndicator += "Visual"; break;
+    }
+    
+    uiManager.setModeIndicator(modeIndicator);  // Assuming you have a method to update the UI
+    uiManager.moveCursor(cursorX, cursorY); 
+    uiManager.render();
 }

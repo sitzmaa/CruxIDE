@@ -3,9 +3,11 @@
 #include <iostream>
 
 // Editor class constructor, outputs initialization message to the console
-Editor::Editor() {
+Editor::Editor() : currentMode(EditorMode::Normal) {
     std::cout << "Editor initialized." << std::endl;
 }
+
+
 
 // Editor class destructor (no specific cleanup required)
 Editor::~Editor() {}
@@ -34,17 +36,29 @@ void Editor::saveFile(const std::string& filename) {
     }
 }
 
-// Displays the content of the file to the console (for debugging or viewing purposes)
-void Editor::displayContent() const {
+void Editor::displayContent() {
     std::cout << content << std::endl;
 }
 
-// Adds additional text to the content in the editor
-void Editor::appendText(const std::string& text) {
-    content += text;
+void Editor::switchMode(EditorMode mode) {
+    currentMode = mode;
 }
 
-// Clears all content in the editor
-void Editor::clearContent() {
-    content.clear();
+EditorMode Editor::getCurrentMode() const {
+    return currentMode;
+}
+
+std::string Editor::getEditorContent() const {
+    return content;
+}
+void Editor::insertCharacter(char ch) {
+    // Add the character at the current cursor position
+    content.push_back(ch);
+}
+
+void Editor::deleteCharacter() {
+    // Remove the last character
+    if (!content.empty()) {
+        content.pop_back();
+    }
 }

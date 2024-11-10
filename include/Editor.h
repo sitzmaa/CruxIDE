@@ -2,6 +2,7 @@
 #define EDITOR_H
 
 #include <string>
+#include "EditorMode.h"
 
 class Editor {
 public:
@@ -10,19 +11,17 @@ public:
 
     void openFile(const std::string& filename);
     void saveFile(const std::string& filename);
-    void displayContent() const;
+    void displayContent();
+    void switchMode(EditorMode mode);
+    EditorMode getCurrentMode() const;
+    std::string getEditorContent() const;
+    void insertCharacter(char ch);
+    void deleteCharacter();
 
-    // Additional content editing methods
-    void appendText(const std::string& text);
-    void clearContent();
-    // Example in Editor.h
-    std::string getEditorContent() const {
-        return content; // Return the content of the editor
-    }
-
-
+    
 private:
     std::string content;
+    EditorMode currentMode;
 };
 
 #endif // EDITOR_H
