@@ -2,71 +2,74 @@
 #include <iostream>
 #include <vector>
 
+// UIManager class constructor, sets default window dimensions and cursor position
 UIManager::UIManager() : windowWidth(80), windowHeight(24), cursorX(0), cursorY(0) {
     std::cout << "UIManager initialized." << std::endl;
 }
 
+// UIManager class destructor (no specific cleanup required)
 UIManager::~UIManager() {}
 
+// Initializes UI components, printing to the console
 void UIManager::initialize() {
     std::cout << "Initializing UI components..." << std::endl;
 }
 
+// Renders the entire editor content to the screen
 void UIManager::render() {
-    renderEditorContent();
+    renderEditorContent(); // Calls function to render each line of content
 }
 
+// Sets the content that the editor will display on the UI
 void UIManager::setEditorContent(const std::string& content) {
-    editorContent = content;
+    editorContent = content; // Stores content to display
 }
 
+// Moves the cursor to a specified position on the screen and updates rendering
 void UIManager::moveCursor(int x, int y) {
     int oldCursorX = cursorX;
     int oldCursorY = cursorY;
     cursorX = x;
     cursorY = y;
-    // Rerender only the lines where the cursor moved from and to
+    // Render only the lines where the cursor moved from and to, improving efficiency
     renderLine(oldCursorY, getLineContent(oldCursorY));
     renderLine(cursorY, getLineContent(cursorY));
 }
 
+// Renders all content in the editor, line by line
 void UIManager::renderEditorContent() {
     std::vector<std::string> lines;
     std::string line;
     for (char c : editorContent) {
         if (c == '\n') {
-            lines.push_back(line);
+            lines.push_back(line); // Store each line separately
             line.clear();
         } else {
-            line += c;
+            line += c; // Build up each line
         }
     }
     if (!line.empty()) {
-        lines.push_back(line);
+        lines.push_back(line); // Include the last line if it doesn't end with a newline
     }
 
+    // Render each line by calling renderLine
     for (int i = 0; i < lines.size(); ++i) {
         renderLine(i, lines[i]);
     }
 }
 
+// Renders a specific line with cursor position handling
 void UIManager::renderLine(int lineNumber, const std::string& line) {
-    // Move to the line number in the terminal (platform-specific implementation needed)
-    std::cout << "\033[" << lineNumber + 1 << "H"; // ANSI escape code to move cursor to line (lineNumber + 1)
-
-    for (int x = 0; x < line.size(); ++x) {
-        if (lineNumber == cursorY && x == cursorX) {
-            std::cout << '_'; // Render the cursor at the current position
-        } else {
-            std::cout << line[x];
-        }
-    }
-    // Clear the rest of the line if needed
-    for (int x = line.size(); x < windowWidth; ++x) {
-        std::cout << ' ';
+    // Move to the correct line position, and display the line with cursor indication
+    if (lineNumber == cursorY) {
+        std::string renderedLine = line.substr(0, cursorX) + '|' + line.substr(cursorX);
+        std::cout << renderedLine << std::endl;
+    } else {
+        std::cout << line << std::endl;
     }
 }
 
+// Gets the specific content of a line for rendering
 std::string UIManager::getLineContent(int lineNumber) const {
     std::vector<std::string> lines;
     std::string line;
@@ -81,5 +84,15 @@ std::string UIManager::getLineContent(int lineNumber) const {
     if (!line.empty()) {
         lines.push_back(line);
     }
-    return lineNumber < lines.size() ? lines[lineNumber] : "";
+    return (lineNumber < lines.size()) ? lines[lineNumber] : "";
+}
+
+// Gets the editor window's width
+int UIManager::getWindowWidth() const {
+    return windowWidth;
+}
+
+// Gets the editor window's height
+int UIManager::getWindowHeight() const {
+    return windowHeight;
 }

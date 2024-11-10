@@ -7,15 +7,17 @@ class Editor {
 public:
     Editor();
     ~Editor();
+
     void openFile(const std::string& filename);
     void saveFile(const std::string& filename);
-    void displayContent();
-    // TODO: Add methods for editing text
+    void displayContent() const;
 
-    std::string getContent() const { return content; }
+    // Additional content editing methods
+    void appendText(const std::string& text);
+    void clearContent();
 
 private:
-    std::string content; // Store file content
+    std::string content;
 };
 
 #endif // EDITOR_H
