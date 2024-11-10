@@ -14,7 +14,7 @@ Core::Core() : cursorX(0), cursorY(0) {
     // Open a file named "example.txt" and load its content into the editor
     editor.openFile("example.txt");
     // Set the editor's content in the UIManager for display purposes
-    uiManager.setEditorContent(editor.getContent());
+    uiManager.setEditorContent(editor.getEditorContent());  // Updated method call
     // Initialize UI components (prepare screen for rendering)
     uiManager.initialize();
 }

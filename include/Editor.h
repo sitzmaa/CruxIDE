@@ -15,6 +15,11 @@ public:
     // Additional content editing methods
     void appendText(const std::string& text);
     void clearContent();
+    // Example in Editor.h
+    std::string getEditorContent() const {
+        return content; // Return the content of the editor
+    }
+
 
 private:
     std::string content;
